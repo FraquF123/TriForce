@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Разместить заказ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Разместить заказ</h1>
+        <form id="order-form">
+            <input type="text" id="project-title" placeholder="Название проекта" required />
+            <textarea id="project-description" placeholder="Описание проекта" required></textarea>
+            <select id="category" required>
+                <option value="" disabled selected>Выберите категорию</option>
+                <option value="Дизайн">Дизайн</option>
+                <option value="Разработка">Разработка</option>
+                <option value="Маркетинг">Маркетинг</option>
+            </select>
+            <input type="date" id="deadline" required />
+            <button type="submit">Отправить заявку</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('order-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('project-title').value;
+            const description = document.getElementById('project-description').value;
+            const category = document.getElementById('category').value;
+            const deadline = document.getElementById('deadline').value;
+
+            const newOrder = { title, description, category, deadline };
+            
+            // Получаем текущие заказы из localStorage
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.push(newOrder);
+            
+            // Сохраняем обновленный список заказов
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            // Перенаправляем на страницу с заказами
+            window.location.href = 'order-details.html';
+        });
+    </script>
+</body>
+</html>

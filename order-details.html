@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали заказов</title>
+    <style>
+        @font-face {
+            font-family: 'custom';
+            src: url('Inter2.ttf') format('truetype');
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            font-family: 'custom', sans-serif;
+            max-width: 600px;
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .order {
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+        .back-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ваши заказы</h1>
+        <div id="orders-container"></div>
+        <button class="back-button" onclick="window.location.href='index.html'">Вернуться на главный экран</button>
+    </div>
+
+    <script>
+        function loadOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const container = document.getElementById('orders-container');
+            container.innerHTML = '';
+
+            orders.forEach((order, index) => {
+                const orderDiv = document.createElement('div');
+                orderDiv.className = 'order';
+                orderDiv.innerHTML = `
+                    <p><strong>Название:</strong> ${order.title}</p>
+                    <p><strong>Описание:</strong> ${order.description}</p>
+                    <p><strong>Категория:</strong> ${order.category}</p>
+                    <p><strong>Дедлайн:</strong> ${order.deadline}</p>
+                    <button onclick="deleteOrder(${index})">Удалить</button>
+                `;
+                container.appendChild(orderDiv);
+            });
+        }
+
+        function deleteOrder(index) {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.splice(index, 1);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            loadOrders(); // Перезагружаем список заказов
+        }
+
+        // Загружаем заказы при загрузке страницы
+        window.onload = loadOrders;
+    </script>
+</body>
+</html>
